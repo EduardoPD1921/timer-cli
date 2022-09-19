@@ -1,3 +1,5 @@
+#[allow(unused)]
+
 mod actions;
 mod traits;
 
@@ -10,16 +12,16 @@ use actions::none::None;
 use traits::command::Command;
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
+    let mut args = env::args();
+    args.next();
 
-    let _file_path = &args[0];
-    let cli_command = &args[1];
-    let command_type = define_command_type_by_arg(cli_command);
+    let main_command = args.next().expect("You need to pass a main command");
+    let command_type = get_command_type_by_arg(main_command);
 
-    command_type.execute_command();
+    command_type.execute_command(args);
 }
 
-fn define_command_type_by_arg(command: &String) -> Box<dyn Command> {
+fn get_command_type_by_arg(command: String) -> Box<dyn Command> {
     match command.as_str() {
         "create" => Box::new(CreateTimer),
         "list" => Box::new(ListTimers),
