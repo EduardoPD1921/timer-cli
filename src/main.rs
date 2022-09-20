@@ -5,10 +5,7 @@ mod traits;
 
 use std::env;
 
-use actions::create_timer::CreateTimer;
-use actions::list_timers::ListTimers;
-use actions::none::None;
-
+use actions::{create_timer::CreateTimer, list_timers::ListTimers, timer::Timer, none::None};
 use traits::command::Command;
 
 fn main() {
@@ -25,6 +22,7 @@ fn get_command_type_by_arg(command: String) -> Box<dyn Command> {
     match command.as_str() {
         "create" => Box::new(CreateTimer),
         "list" => Box::new(ListTimers),
+        "play" => Box::new(Timer),
         _ => Box::new(None)
     }
 }
