@@ -21,18 +21,14 @@ impl Command for CreateTimer {
 }
 
 fn write_into_file(timer_name: String) {
-    let mut file: File;
-    let timer_name_formatted: String;
-
     let path_exists = Path::new(FILE_PATH).exists();
-    if path_exists {
-        timer_name_formatted = format!("\n{}", timer_name);
-    } else {
+    if !path_exists {
         File::create(FILE_PATH).expect(CANT_CREATE_FILE_ERROR);
-        timer_name_formatted = timer_name; 
     }
 
-    file = open_file_with_append_option();
+    let mut file = open_file_with_append_option();
+    let timer_name_formatted = format!("{};0\n", timer_name);
+
     file.write_all(timer_name_formatted.as_bytes()).expect(CANT_WRITE_INTO_FILE_ERROR);
 }
 
